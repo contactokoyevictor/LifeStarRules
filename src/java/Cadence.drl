@@ -1,0 +1,179 @@
+
+import com.novartis.cadence.database.*;
+
+#global DatabaseQuery database;
+
+#insertSchedule(int userID , String shedtype, int active, String weekdays, 
+#				 String frequencyType, int msg_channel, String schedule_subtype,
+#				 String kitCode)
+
+#========================================================================================================================#
+#											 Email																		 #
+#========================================================================================================================#				
+rule "Confirmation and Welcome Emails (Skeptics)"
+	dialect "java"
+	when 	
+		u : User((segmentCode == "GOTSKPSEG") && (numberOfWeek == 1));	
+	then
+		DatabaseQuery database = new DatabaseQuery();
+		u.setKitCode("GOTSKPWLEM");
+		database.insertSchedule(u.getUserID(), "SYSTEM", 1, "Monday,Tuesday","Weekly" , 1, "Cadence", u.getKitCode());	
+		System.out.println("User : " + u.getUserID() + "KitCode : " + u.getKitCode() + " - Weekly all email set!\n");
+end
+#=======================================================================================================================
+rule "Confirmation and Welcome Emails (Struggler)"
+	dialect "java"
+	when 	
+		u : User((segmentCode == "GOTSTGSEG") && (numberOfWeek == 1));	
+	then
+		DatabaseQuery database = new DatabaseQuery();
+		u.setKitCode("GOTSTGWLEM");
+		database.insertSchedule(u.getUserID(), "SYSTEM", 1, "Monday,Tuesday","Weekly" , 1, "Cadence", u.getKitCode());	
+		System.out.println("User : " + u.getUserID() + "KitCode : " + u.getKitCode() + " - Weekly all email set!\n");
+end
+#=======================================================================================================================
+rule "Weekly All Email One (Skeptics)"
+	dialect "java"
+	when 	
+		u : User((weekOfMonth == 1 || == 3 && dayOfWeek == 3) 	||
+				(weekOfMonth == 2 || == 4 && dayOfWeek == 1) 	&&
+				(segmentCode == "GOTSKPSEG")					&&
+		 		(numberOfWeek <= 24));	
+	then
+		DatabaseQuery database = new DatabaseQuery();
+		u.setEmailKitCode("GOTSKPEMW");
+		database.insertSchedule(u.getUserID(), "SYSTEM", 1, "Monday,Tuesday","Weekly" , 1, "Cadence", u.getEmailKitCode());	
+		System.out.println("User : " + u.getUserID() + "KitCode : " + u.getEmailKitCode() + " - Weekly all email set!\n");
+end
+#========================================================================================================================
+rule "Weekly All Email One (Strugglers)"
+	dialect "java"
+	when 	
+		u : User((weekOfMonth == 1 || == 3 && dayOfWeek == 3) 	||
+				(weekOfMonth == 2 || == 4 && dayOfWeek == 1) 	&&
+				(segmentCode == "GOTSTGSEG")	&&
+		 		(numberOfWeek <= 24));	
+	then
+		DatabaseQuery database = new DatabaseQuery();		
+		u.setEmailKitCode("GOTSTGEMW");
+		database.insertSchedule(u.getUserID(), "SYSTEM", 1, "Monday,Tuesday","Weekly" , 1, "Cadence", u.getEmailKitCode());	
+		System.out.println("User : " + u.getUserID() + "KitCode : " + u.getEmailKitCode() + " - Weekly all email set!\n");
+end
+#=========================================================================================================================
+rule "Skeptic Email"
+	dialect "java"
+	when 	
+		u : User((weekOfMonth == 1 && dayOfWeek == 2) || 
+			  	(weekOfMonth == 2 && dayOfWeek == 3)  || 
+			  	(weekOfMonth == 3 && dayOfWeek == 4)  &&
+			  	(segmentCode == "GOTSKPSEG") 		  &&
+			  	(numberOfWeek <= 24));	
+	then
+		DatabaseQuery database = new DatabaseQuery();
+		u.setEmailKitCode("GOTSKPEMW");
+		database.insertSchedule(u.getUserID(), "SYSTEM", 1, "Monday,Tuesday,Wednesday","Weekly" , 1, "Cadence", u.getEmailKitCode());
+		System.out.println("User : " + u.getUserID() + "KitCode : " + u.getEmailKitCode() + " - Weekly all email set!\n");	
+end
+#==========================================================================================================================
+
+rule "Patient BP Buddy Email"
+	dialect "java"
+	when 	
+		u : User((weekOfMonth == 2 && dayOfWeek == 6) || 
+				(weekOfMonth == 4 && dayOfWeek == 3)  &&
+				((smsOptinDate == null) || (smsOptoutDate != null)) &&
+				(numberOfWeek <= 24) && (bpBuddy == "in" ));		
+	then
+		DatabaseQuery database = new DatabaseQuery();
+		u.setEmailKitCode("");
+		System.out.println("User : " + u.getUserID() + " - Patient BP Buddy Email Set!\n");
+		database.insertSchedule(u.getUserID(), "SYSTEM", 1, "Wednesday,Friday","Bi-Weekly" , 1, "Cadence", u.getEmailKitCode());	
+end
+#===========================================================================================================================
+
+rule "Caregiver BP Buddy Email"
+	dialect "java"
+	when 	
+		 User((weekOfMonth == 2 && dayOfWeek == 6) || 
+			 (weekOfMonth == 4 && dayOfWeek == 3)); 					
+	then
+		DatabaseQuery database = new DatabaseQuery();
+		#bi-weekly
+		#database.insertSchedule(5, "USER", 1, "Mon","Once" , 1);	
+end
+#=======================================================================================================================
+
+rule "Virtual BP Buddy Email"
+	dialect "java"
+	when 	
+		 u : User((smsOptinDate == null || smsOptoutDate != null) &&
+		 	  (lastWeekOfMonth == true) && dayOfWeek == 6); 					
+	then
+		DatabaseQuery database = new DatabaseQuery();
+		System.out.println("User : " + u.getUserID() + " - Virtual BP Buddy Email Set!\n");
+		database.insertSchedule(u.getUserID(), "SYSTEM", 1, "Friday","Monthly" , 1, "Cadence", "");	
+end
+
+
+
+#=======================================================================================================================#
+#												SMS																		#
+#=======================================================================================================================#
+
+rule "Program SMS"
+	dialect "java"
+	when 	
+		u : User(((weekOfMonth == 1 || == 2 || == 3) && dayOfWeek == 5) &&
+				((smsOptinDate != null) && (smsOptoutDate == null))    &&
+				(numberOfWeek <= 24));	
+	then
+		DatabaseQuery database = new DatabaseQuery();
+		System.out.println("User : " + u.getUserID() + " - Program SMS Set!\n");
+		u.setSmsKitCode("GOTPRGSMW");
+		database.insertSchedule(u.getUserID(), "SYSTEM", 1, "Thursday","Weekly" , 2, "Cadence", u.getSmsKitCode());		
+end
+#=======================================================================================================================
+
+rule "Monthly Report SMS"
+	dialect "java"
+	when 	
+		 u : User((lastWeekOfMonth == true && dayOfWeek == 4)  &&
+		 	 ((smsOptinDate != null) && (smsOptoutDate == null)) &&
+		 	 (numberOfWeek <= 24));	
+	then
+		DatabaseQuery database = new DatabaseQuery();
+		System.out.println("User : " + u.getUserID() + " - Monthly Report SMS!\n");
+		u.setSmsKitCode("GOTMONSMW");
+		database.insertSchedule(u.getUserID(), "SYSTEM", 1, "Wednesday","Monthly" , 2, "Cadence", u.getSmsKitCode());	
+end
+#======================================================================================================================
+
+rule "Customized Patient BP Buddy SMS"
+	dialect "java"
+	when 	
+		u : User(((weekOfMonth == 2 && dayOfWeek == 4) || 
+			 (weekOfMonth == 4 && dayOfWeek == 6)) &&
+			 (numberOfWeek <= 24) &&
+			 ((smsOptinDate != null) && (smsOptoutDate == null))); 					
+	then
+		DatabaseQuery database = new DatabaseQuery();
+		System.out.println("User : " + u.getUserID() + " - Customized Patient BP Buddy SMS set!\n");
+		database.insertSchedule(u.getUserID(), "SYSTEM", 1, "Wednesday,Friday","Bi-Weekly" , 2, "Cadence", "");
+end
+#=======================================================================================================================
+
+rule "Virtual BP Buddy SMS"
+	dialect "java"
+	when 	
+		 u : User((lastWeekOfMonth == true && dayOfWeek == 6)  &&
+		     ((smsOptinDate != null) && (smsOptoutDate == null)) &&
+		     (numberOfWeek <= 24)); 
+		 					
+	then
+		DatabaseQuery database = new DatabaseQuery();
+		u.setKitCode("");
+		System.out.println("User : " + u.getUserID() + " - Virtual BP Buddy SMS set!\n");
+		database.insertSchedule(u.getUserID(), "SYSTEM", 1, "Friday" , "Monthly" , 2, "Cadence", u.getKitCode());	
+end
+#=======================================================================================================================
+

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+    <xsd:element name="request">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="broadcasts">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="broadcast" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="broadcastid" type="xsd:integer"/>
+                                        <xsd:element name="includelists">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="listid" maxOccurs="unbounded" minOccurs="0" type="xsd:integer"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="excludelists">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="listid" minOccurs="0" maxOccurs="unbounded" type="xsd:integer"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="message" type="xsd:string"/>
+                                        <xsd:element name="shortcode" type="xsd:integer"/>
+                                        <xsd:element name="campaignid" type="xsd:integer"/>
+                                        <xsd:element name="sendat" type="xsd:date"/>
+                                        <xsd:element name="msgfunction" type="xsd:string"/>
+                                        <xsd:element name="priority" type="xsd:integer"/>
+                                        <xsd:element name="fteu" type="xsd:string"/>
+                                        <xsd:element name="tariff" type="xsd:integer"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

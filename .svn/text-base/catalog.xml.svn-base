@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/Users/Easy/Documents/NetBeansProjects/connectormobileweb/src/java/com/novartis/connectors/schemas/getPageElements.xsd" uri="src/conf/xml-resources/jaxb/GetPageElementsRequest/getPageElements.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Documents/NetBeansProjects/connectormobileweb/src/java/com/novartis/connectors/schemas/getPageElementsRes.xsd" uri="src/conf/xml-resources/jaxb/GetPageElementsResponse/getPageElementsRes.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/GetConsumerDetailsReq.xsd" uri="src/conf/xml-resources/jaxb/GetConsumerDetailsReq/GetConsumerDetailsReq.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/getPageElementsRes.xsd" uri="src/conf/xml-resources/jaxb/GetPageElementsResponse/getPageElementsRes.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/GetConsumerDetailsRes.xsd" uri="src/conf/xml-resources/jaxb/GetConsumerDetailsRes/GetConsumerDetailsRes.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/SetConsumerDetailsReq.xsd" uri="src/conf/xml-resources/jaxb/SetConsumerDetailsReq/SetConsumerDetailsReq.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/SetConsumerDetailsRes.xsd" uri="src/conf/xml-resources/jaxb/SetConsumerDetailsRes/SetConsumerDetailsRes.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/BroadcastReq.xsd" uri="src/conf/xml-resources/jaxb/BroadcastReq/BroadcastReq.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/BroadcastRes.xsd" uri="src/conf/xml-resources/jaxb/BroadcastRes/BroadcastRes.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/OptinReq.xsd" uri="src/conf/xml-resources/jaxb/OptinReq/OptinReq.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/OptinRes.xsd" uri="src/conf/xml-resources/jaxb/OptinRes/OptinRes.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/MOReq.xsd" uri="src/conf/xml-resources/jaxb/MOReq/MOReq.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/MORes.xsd" uri="src/conf/xml-resources/jaxb/MORes/MORes.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/MTReq.xsd" uri="src/conf/xml-resources/jaxb/MTReq/MTReq.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/OptoutReq.xsd" uri="src/conf/xml-resources/jaxb/OptoutReq/OptoutReq.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/OptoutRes.xsd" uri="src/conf/xml-resources/jaxb/OptoutRes/OptoutRes.xsd"/>
+    <system systemId="file:/C:/Users/Easy/Desktop/RulesService2/src/java/com/novartis/connectors/schemas/MTRes.xsd" uri="src/conf/xml-resources/jaxb/MTRes/MTRes.xsd"/>
+    <system systemId="file:/Users/adam/Dropbox/Infonaligy%20Source/biznaligy_ipsh/NOVARTIS/dev_src/LifeStarRules/../../../NovartisIRMA/ConnectorNovartisIRMA/src/conf/xml-resources/jaxb/GetEnrollmentDetails/GetEnrollmentDetails.xsd" uri="src/conf/xml-resources/jaxb/GetEnrollmentDetails/GetEnrollmentDetails.xsd"/>
+    <system systemId="file:/Users/adam/Dropbox/Infonaligy%20Source/biznaligy_ipsh/NOVARTIS/dev_src/LifeStarRules/../../../NovartisIRMA/ConnectorNovartisIRMA/src/conf/xml-resources/jaxb/SetEnrollmentDetails/SetEnrollmentDetails.xsd" uri="src/conf/xml-resources/jaxb/SetEnrollmentDetails/SetEnrollmentDetails.xsd"/>
+</catalog>

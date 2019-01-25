@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="request">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="page">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="campaignid" type="xs:integer" />
+							<xs:element name="consumerid" type="xs:integer" />
+							<xs:element name="elements">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element maxOccurs="unbounded" name="element">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:choice maxOccurs="unbounded">
+														<xs:element name="name" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="message" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="weekday" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="frequency" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="time" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="systolic" minOccurs="0" maxOccurs="unbounded" type="xs:integer" />
+														<xs:element name="diastolic" minOccurs="0" maxOccurs="unbounded" type="xs:integer" />
+														<xs:element name="date" minOccurs="0" maxOccurs="unbounded" type="xs:date" />
+														<xs:element name="last_time" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="today" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="week" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="first_name" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="last_name" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="dob" minOccurs="0" maxOccurs="unbounded" type="xs:date" />
+														<xs:element name="gender" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="address1" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="address2" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+                                                                                                                <xs:element name="address_line1" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="address_line2" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="city" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="state" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="zip" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="email" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="message_type" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="other" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="title" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="sms" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="new_password" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="user_name" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="password" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="phone" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="email_address" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="marketing" minOccurs="0" maxOccurs="unbounded" type="xs:integer" />
+														<xs:element name="accept" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="comments" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="question1" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="question2" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="question3" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="question4" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="question5" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="question6" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="question7" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="ActivitiesCompleted" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="CompletedCount" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="Icon_image" minOccurs="0" maxOccurs="unbounded" />
+														<xs:element name="Today_Total" minOccurs="0" maxOccurs="unbounded" />
+                                                                                                                <xs:element name="skiptyping" minOccurs="0" maxOccurs="unbounded" />
+														<xs:element name="Week_Total" minOccurs="0" maxOccurs="unbounded" />
+														<xs:element name="from" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="to" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="DailySystolicPoints" minOccurs="0" maxOccurs="unbounded" type="xs:integer" />
+														<xs:element name="DailyDiastolicPoints" minOccurs="0" maxOccurs="unbounded" type="xs:integer" />
+														<xs:element name="AssesmentStat" minOccurs="0" maxOccurs="unbounded" />
+														<xs:element name="selected" minOccurs="0" maxOccurs="unbounded" />
+														<xs:element name="Systolic_value" minOccurs="0" maxOccurs="unbounded" type="xs:integer" />
+														<xs:element name="Diastolic_value" minOccurs="0" maxOccurs="unbounded" type="xs:integer" />
+														<xs:element name="Last_Read" minOccurs="0" maxOccurs="unbounded" />
+                                                                                                                <xs:element name="start_date" minOccurs="0" maxOccurs="unbounded" type="xs:date" />
+                                                                                                                <xs:element name="end_date" minOccurs="0" maxOccurs="unbounded" type="xs:date" />
+														<xs:element name="Result" minOccurs="0" maxOccurs="unbounded" />
+														<xs:element name="option" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+                                                                                                                <xs:element name="Next_Remind_Time" minOccurs="0" maxOccurs="unbounded" />
+														<xs:element name="Next_Remind_Message" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+                                                                                                        	<xs:element name="high_bp" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="medication" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+														<xs:element name="drug_unique_id" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+
+													</xs:choice>
+												</xs:sequence>
+												<xs:attribute name="id" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

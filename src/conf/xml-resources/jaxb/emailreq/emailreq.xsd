@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="request">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="email" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="campaignid" type="xs:int" />
+                            <xs:element name="consumerid" type="xs:int" />
+                            <xs:element name="tmacontacteventid" type="xs:string" />
+                            <xs:element name="emailaddr" type="xs:string" />
+                            <xs:element name="irmaindividualid" type="xs:string" />
+                            <xs:element name="irmacampaignindividualid" type="xs:string" />
+                            <xs:element name="inboundcontacteventid" type="xs:string" />
+                            <xs:element name="kitcode" type="xs:string" />
+                            <xs:element name="consumerfname" type="xs:string" minOccurs="0" />
+                            <xs:element name="temppassword" type="xs:string" minOccurs="0" />
+                            <xs:element name="flexurl" minOccurs="0" type="xs:string"/>
+                            <xs:element name="flexid" type="xs:string"/>
+                         <xs:element name="timerefday" minOccurs="0" type="xs:string"/>
+                         <xs:element name="timerefmonth" minOccurs="0" type="xs:string"/>
+                         <xs:element name="timerefyear" minOccurs="0" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

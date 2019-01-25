@@ -1,0 +1,11 @@
+auxiliary.org-netbeans-modules-web-client-tools-api.clientdebug=false
+auxiliary.org-netbeans-modules-web-client-tools-api.FIREFOX=true
+auxiliary.org-netbeans-modules-web-client-tools-api.INTERNET_5f_EXPLORER=false
+auxiliary.org-netbeans-modules-web-client-tools-api.serverdebug=true
+file.reference.mysql-connector-java-5.1.7-bin.jar=C:\\Users\\Easy\\Desktop\\mysql-connector-java-5.1.7-bin.jar
+j2ee.platform.is.jsr109=true
+j2ee.server.home=C:\\jboss-5.1.0.GA
+j2ee.server.instance=jboss-deployer:localhost:8080#default&C:\\jboss-5.1.0.GA
+javac.debug=true
+javadoc.preview=true
+user.properties.file=C:\\Users\\blacksheep\\.netbeans\\6.9\\build.properties

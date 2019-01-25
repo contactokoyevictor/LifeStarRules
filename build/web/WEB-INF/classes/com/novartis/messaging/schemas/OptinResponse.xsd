@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+    <xsd:element name="response">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="optins">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="consumer" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="consumerid" type="xsd:int"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="status" type="xsd:string"/>
+				<xsd:element name="statusmessage" >
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+
+                                            <xsd:element name="exceptions">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="exception" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+
+					</xsd:sequence>
+                                    </xsd:complexType>
+                                 </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<schemas xmlns='http://xml.netbeans.org/schema/JAXBWizConfig' destdir='build/generated-sources/jaxb' projectName='connectormobileweb' version='1.0'>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.GetConsumerDetailsReq' name='GetConsumerDetailsReq'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/GetConsumerDetailsReq/GetConsumerDetailsReq.xsd' origLocation='src/java/com/novartis/connectors/schemas/GetConsumerDetailsReq.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.SetConsumerDetailsReq' name='SetConsumerDetailsReq'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/SetConsumerDetailsReq/SetConsumerDetailsReq.xsd' origLocation='src/java/com/novartis/connectors/schemas/SetConsumerDetailsReq.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.SetConsumerDetailsRes' name='SetConsumerDetailsRes'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/SetConsumerDetailsRes/SetConsumerDetailsRes.xsd' origLocation='src/java/com/novartis/connectors/schemas/SetConsumerDetailsRes.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.BroadcastReq' name='BroadcastReq'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/BroadcastReq/BroadcastReq.xsd' origLocation='src/java/com/novartis/connectors/schemas/BroadcastReq.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.BroadcastRes' name='BroadcastRes'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/BroadcastRes/BroadcastRes.xsd' origLocation='src/java/com/novartis/connectors/schemas/BroadcastRes.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.OptinReq' name='OptinReq'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/OptinReq/OptinReq.xsd' origLocation='src/java/com/novartis/connectors/schemas/OptinReq.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.OptinRes' name='OptinRes'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/OptinRes/OptinRes.xsd' origLocation='src/java/com/novartis/connectors/schemas/OptinRes.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.MOReq' name='MOReq'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/MOReq/MOReq.xsd' origLocation='src/java/com/novartis/connectors/schemas/MOReq.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.MORes' name='MORes'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/MORes/MORes.xsd' origLocation='src/java/com/novartis/connectors/schemas/MORes.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.OptoutReq' name='OptoutReq'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/OptoutReq/OptoutReq.xsd' origLocation='src/java/com/novartis/connectors/schemas/OptoutReq.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.OptoutRes' name='OptoutRes'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/OptoutRes/OptoutRes.xsd' origLocation='src/java/com/novartis/connectors/schemas/OptoutRes.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.MTRes' name='MTRes'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/MTRes/MTRes.xsd' origLocation='src/java/com/novartis/connectors/schemas/MTRes.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.GetConsumerDetailsRes' name='GetConsumerDetailsRes'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/GetConsumerDetailsRes/GetConsumerDetailsRes.xsd' origLocation='src/java/com/novartis/connectors/schemas/GetConsumerDetailsRes.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.GetPageElementsResponse' name='GetPageElementsResponse'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/GetPageElementsResponse/getPageElementsRes.xsd' origLocation='src/java/com/novartis/connectors/schemas/getPageElementsRes.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.GetPageElementsRequest' name='GetPageElementsRequest'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/GetPageElementsRequest/getPageElements.xsd' origLocation='src/java/com/novartis/connectors/schemas/getPageElements.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.jaxb.MTReq' name='MTReq'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/MTReq/MTReq.xsd' origLocation='src/java/com/novartis/connectors/schemas/MTReq.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.GetEnrollmentDetails' name='GetEnrollmentDetails'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/GetEnrollmentDetails/GetEnrollmentDetails.xsd' origLocation='../../../NovartisIRMA/ConnectorNovartisIRMA/src/conf/xml-resources/jaxb/GetEnrollmentDetails/GetEnrollmentDetails.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+	<schema type='-xmlschema' package='com.novartis.connectors.SetEnrollmentDetails' name='SetEnrollmentDetails'>
+		<xjc-options>
+		</xjc-options>
+		<schema-sources>
+			<schema-source location='src/conf/xml-resources/jaxb/SetEnrollmentDetails/SetEnrollmentDetails.xsd' origLocation='../../../NovartisIRMA/ConnectorNovartisIRMA/src/conf/xml-resources/jaxb/SetEnrollmentDetails/SetEnrollmentDetails.xsd'/>
+		</schema-sources>
+		<bindings>
+		</bindings>
+		<catalog/>
+	</schema>
+</schemas>

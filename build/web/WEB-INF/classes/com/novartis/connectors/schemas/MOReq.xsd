@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+    <xsd:element name="request">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="mos">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="mo" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="campaignid" type="xsd:integer"/>
+                                        <xsd:element name="mobilenumber" type="xsd:string"/>
+                                        <xsd:element name="message" type="xsd:string"/>
+                                        <xsd:element name="shortcode" type="xsd:integer"/>
+                                        <xsd:element name="carrierid" type="xsd:integer"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

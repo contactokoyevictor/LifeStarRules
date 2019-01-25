@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="request">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="consumer">
+                    <xs:complexType>
+                        <xs:all>
+                            <xs:element minOccurs="0" maxOccurs="1" name="campaignid" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="consumerid" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="nvscampainid" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="nvsindivid" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="nvscontactevtid" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="findMode" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="campaignIndividualId" type="xs:string" />
+                        </xs:all>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="response">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="consumer">
+                    <xs:complexType>
+                        <xs:all>
+<!--
+        <comments>a comment</comments>
+        <country>US</country>
+        <password>password</password>
+-->
+                            <xs:element minOccurs="0" maxOccurs="1" name="emailAddress" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="addressLine1" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="addressLine2" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="city" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="state" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="zip" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="dob" type="xs:date" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="gender" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="title" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="firstName" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="lastName" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="smsNumber" type="xs:string" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="high_bp" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="medication" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="acceptTerms" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="acceptMarketing" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="drugUniqueID" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="typingQuestion1" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="typingQuestion2" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="typingQuestion3" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="typingQuestion4" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="typingQuestion5" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="typingQuestion6" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="typingQuestion7" type="xs:integer" />
+                            <xs:element minOccurs="0" maxOccurs="1" name="campaignIndvID" type="xs:integer" />
+                        </xs:all>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="status" type="xs:string" />
+                <xs:element name="statusmessage" type="xs:string" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

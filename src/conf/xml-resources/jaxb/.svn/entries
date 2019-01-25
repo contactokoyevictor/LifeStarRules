@@ -1,0 +1,82 @@
+10
+
+dir
+118
+svn://adaawin@168.75.225.76/biznaligy_ipsh/NOVARTIS/dev_src/LifeStarRules/src/conf/xml-resources/jaxb
+svn://adaawin@168.75.225.76/biznaligy_ipsh
+
+
+
+2011-05-01T11:53:55.668935Z
+104
+adam.barrow
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bc14e7ec-1e7f-41a0-94d0-f96e1a1f5add
+
+GetPageElementsRequest
+dir
+
+MOReq
+dir
+
+SetConsumerDetailsReq
+dir
+
+MORes
+dir
+
+GetEnrollmentDetails
+dir
+
+SetConsumerDetailsRes
+dir
+
+MTReq
+dir
+
+GetPageElementsResponse
+dir
+
+MTRes
+dir
+
+OptinReq
+dir
+
+SetEnrollmentDetails
+dir
+
+OptoutReq
+dir
+
+OptinRes
+dir
+
+OptoutRes
+dir
+
+GetConsumerDetailsReq
+dir
+
+BroadcastReq
+dir
+
+GetConsumerDetailsRes
+dir
+
+BroadcastRes
+dir
+

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="response">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="page">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="elements">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="element">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" name="buddyid" />
+                          <xs:element minOccurs="0" name="already_enrolled" />
+                          <xs:element minOccurs="0" name="opt_in_status" />
+                          <xs:element minOccurs="0" name="option" />
+                          <xs:element minOccurs="0" name="first_name" />
+                          <xs:element minOccurs="0" name="last_name" />
+                          <xs:element minOccurs="0" name="date" type="xs:dateTime" />
+                          <xs:element minOccurs="0" name="dob" type="xs:dateTime" />
+                          <xs:element minOccurs="0" name="gender" />
+                          <xs:element minOccurs="0" name="address_line1" />
+                          <xs:element minOccurs="0" name="address_line2" />
+                          <xs:element minOccurs="0" name="city" />
+                          <xs:element minOccurs="0" name="state" />
+                          <xs:element minOccurs="0" name="skip_typing" />
+                          <xs:element minOccurs="0" name="zip" />
+                          <xs:element minOccurs="0" name="buddy_name" />
+                          <xs:element minOccurs="0" name="buddy_greeting" />
+                          <xs:element minOccurs="0" name="reminder_id" />
+                          <xs:element minOccurs="0" name="weekday" />
+                          <xs:element minOccurs="0" name="frequency" />
+                          <xs:element minOccurs="0" name="time" type="xs:time" />
+                          <xs:element minOccurs="0" name="email" />
+                          <xs:element minOccurs="0" name="password" />
+                          <xs:element minOccurs="0" name="phone" />
+                          <xs:element minOccurs="0" name="sms" />
+                          <xs:element minOccurs="0" name="sms_accept" />
+                          <xs:element minOccurs="0" name="diastolic" />
+                          <xs:element minOccurs="0" name="systolic" />
+                          <xs:element minOccurs="0" name="bp_data">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="reading_date" type="xs:dateTime" />
+                                <xs:element name="systolic" />
+                                <xs:element name="systolic_out_of_range" />
+                                <xs:element name="diastolic" />
+                                <xs:element name="diastolic_out_of_range" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" name="icon_image" />
+                          <xs:element minOccurs="0" name="activity_id" type="xs:integer" />
+                          <xs:element minOccurs="0" name="total_activities" type="xs:integer" />
+                          <xs:element minOccurs="0" name="today_total" />
+                          <xs:element minOccurs="0" name="week_total" />
+                          <xs:element minOccurs="0" name="message" />
+                          <xs:element minOccurs="0" name="message_title" />
+                          <xs:element minOccurs="0" name="total_activity_count" />
+                          <xs:element minOccurs="0" name="next_remind_time" type="xs:dateTime" />
+                          <xs:element minOccurs="0" name="next_remind_message" />
+                          <xs:element minOccurs="0" name="bp_message" />
+                          <xs:element minOccurs="0" name="last_time_value" type="xs:dateTime" />
+                          <xs:element minOccurs="0" name="today_value" />
+                          <xs:element minOccurs="0" name="week_value" />
+                          <xs:element minOccurs="0" maxOccurs="unbounded" name="drug">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="drug_unique_id" />
+                                <xs:element name="drug_name" />
+                                <xs:element name="drug_nvs_answer" />
+                                <xs:element name="order" type="xs:integer" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" maxOccurs="unbounded" name="activity">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="activityid" />
+                                <xs:element name="activitygroupid" type="xs:string" />
+                                <xs:element name="activitygrouporder" type="xs:string" />
+                                <xs:element minOccurs="0" name="user_activity_id" />
+                                <xs:element name="resourceid" />
+                                <xs:element minOccurs="0" name="label" />
+                                <xs:element minOccurs="0" name="description" />
+                                <xs:element minOccurs="0" name="date" type="xs:dateTime" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" name="consumerid" />
+                          <xs:element minOccurs="0" name="campaignid" />
+                          <xs:element minOccurs="0" maxOccurs="1" name="readings">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="reading" minOccurs="1" maxOccurs="unbounded">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="date" type="xs:dateTime" />
+                                      <xs:element name="systolic" type="xs:integer" />
+                                      <xs:element name="systolic_out_of_range" type="xs:integer" />
+                                      <xs:element name="diastolic" type="xs:integer" />
+                                      <xs:element name="diastolic_out_of_range" type="xs:integer" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" name="elementstatus" />
+                          <xs:element minOccurs="0" name="elementstatusmessage" />
+                          <xs:element minOccurs="0" name="goal" />
+                          <xs:element minOccurs="0" name="tips">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element minOccurs="0" maxOccurs="unbounded" name="tip">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="tip_id" />
+                                      <xs:element name="tip_name" />
+                                      <xs:element name="tip_content" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" maxOccurs="unbounded" name="reminder">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="reminder_id" type="xs:integer" />
+                                <xs:element name="reminder_type" type="xs:string" />
+                                <xs:element minOccurs="0" maxOccurs="1" name="weekdays">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element minOccurs="0" maxOccurs="unbounded" name="weekday" type="xs:string" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element minOccurs="0" maxOccurs="1" name="times">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element minOccurs="0" maxOccurs="unbounded" name="time" type="xs:time" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="start_time" type="xs:dateTime" />
+                                <xs:element name="frequency" type="xs:string" />
+                                <xs:element name="email" type="xs:integer" />
+                                <xs:element name="sms" type="xs:integer" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:string" use="optional" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="status" />
+        <xs:element name="statusmessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

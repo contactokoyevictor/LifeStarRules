@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+            *** GENERATED FROM xml_binding_cfg.xml - DO NOT EDIT  ***
+            *** Configure thru JAXB Wizard.                       ***
+        -->
+<project name="connectormobileweb_jaxb" default="default" basedir=".">
+    <target name="xjc-typedef-target" depends="-init-project">
+        <typedef classname="com.sun.tools.xjc.XJCTask" name="xjc" xmlns:s="http://xml.netbeans.org/schema/JAXBWizConfig">
+            <classpath path="${jaxbwiz.xjcdef.classpath}"/>
+        </typedef>
+    </target>
+    <target name="jaxb-clean-code-generation" depends="clean,jaxb-code-generation"/>
+    <target name="jaxb-code-generation" depends="xjc-typedef-target,-do-init,-init-macrodef-javac">
+        <mkdir dir="${build.generated.sources.dir}/jaxb" xmlns:s="http://xml.netbeans.org/schema/JAXBWizConfig"/>
+        <mkdir dir="build/generated/jaxbCache" xmlns:s="http://xml.netbeans.org/schema/JAXBWizConfig"/>
+        <mkdir dir="build/generated/jaxbCache/GetConsumerDetailsReq"/>
+        <xjc package="com.novartis.connectors.jaxb.GetConsumerDetailsReq" destdir="build/generated/jaxbCache/GetConsumerDetailsReq" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/GetConsumerDetailsReq/GetConsumerDetailsReq.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/GetConsumerDetailsReq/GetConsumerDetailsReq.xsd"/>
+            <produces dir="build/generated/jaxbCache/GetConsumerDetailsReq"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/GetConsumerDetailsReq"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/SetConsumerDetailsReq"/>
+        <xjc package="com.novartis.connectors.jaxb.SetConsumerDetailsReq" destdir="build/generated/jaxbCache/SetConsumerDetailsReq" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/SetConsumerDetailsReq/SetConsumerDetailsReq.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/SetConsumerDetailsReq/SetConsumerDetailsReq.xsd"/>
+            <produces dir="build/generated/jaxbCache/SetConsumerDetailsReq"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/SetConsumerDetailsReq"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/SetConsumerDetailsRes"/>
+        <xjc package="com.novartis.connectors.jaxb.SetConsumerDetailsRes" destdir="build/generated/jaxbCache/SetConsumerDetailsRes" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/SetConsumerDetailsRes/SetConsumerDetailsRes.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/SetConsumerDetailsRes/SetConsumerDetailsRes.xsd"/>
+            <produces dir="build/generated/jaxbCache/SetConsumerDetailsRes"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/SetConsumerDetailsRes"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/BroadcastReq"/>
+        <xjc package="com.novartis.connectors.jaxb.BroadcastReq" destdir="build/generated/jaxbCache/BroadcastReq" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/BroadcastReq/BroadcastReq.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/BroadcastReq/BroadcastReq.xsd"/>
+            <produces dir="build/generated/jaxbCache/BroadcastReq"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/BroadcastReq"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/BroadcastRes"/>
+        <xjc package="com.novartis.connectors.jaxb.BroadcastRes" destdir="build/generated/jaxbCache/BroadcastRes" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/BroadcastRes/BroadcastRes.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/BroadcastRes/BroadcastRes.xsd"/>
+            <produces dir="build/generated/jaxbCache/BroadcastRes"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/BroadcastRes"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/OptinReq"/>
+        <xjc package="com.novartis.connectors.jaxb.OptinReq" destdir="build/generated/jaxbCache/OptinReq" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/OptinReq/OptinReq.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/OptinReq/OptinReq.xsd"/>
+            <produces dir="build/generated/jaxbCache/OptinReq"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/OptinReq"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/OptinRes"/>
+        <xjc package="com.novartis.connectors.jaxb.OptinRes" destdir="build/generated/jaxbCache/OptinRes" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/OptinRes/OptinRes.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/OptinRes/OptinRes.xsd"/>
+            <produces dir="build/generated/jaxbCache/OptinRes"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/OptinRes"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/MOReq"/>
+        <xjc package="com.novartis.connectors.jaxb.MOReq" destdir="build/generated/jaxbCache/MOReq" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/MOReq/MOReq.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/MOReq/MOReq.xsd"/>
+            <produces dir="build/generated/jaxbCache/MOReq"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/MOReq"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/MORes"/>
+        <xjc package="com.novartis.connectors.jaxb.MORes" destdir="build/generated/jaxbCache/MORes" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/MORes/MORes.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/MORes/MORes.xsd"/>
+            <produces dir="build/generated/jaxbCache/MORes"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/MORes"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/OptoutReq"/>
+        <xjc package="com.novartis.connectors.jaxb.OptoutReq" destdir="build/generated/jaxbCache/OptoutReq" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/OptoutReq/OptoutReq.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/OptoutReq/OptoutReq.xsd"/>
+            <produces dir="build/generated/jaxbCache/OptoutReq"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/OptoutReq"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/OptoutRes"/>
+        <xjc package="com.novartis.connectors.jaxb.OptoutRes" destdir="build/generated/jaxbCache/OptoutRes" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/OptoutRes/OptoutRes.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/OptoutRes/OptoutRes.xsd"/>
+            <produces dir="build/generated/jaxbCache/OptoutRes"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/OptoutRes"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/MTRes"/>
+        <xjc package="com.novartis.connectors.jaxb.MTRes" destdir="build/generated/jaxbCache/MTRes" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/MTRes/MTRes.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/MTRes/MTRes.xsd"/>
+            <produces dir="build/generated/jaxbCache/MTRes"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/MTRes"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/MTReq"/>
+        <xjc package="com.novartis.connectors.jaxb.MTReq" destdir="build/generated/jaxbCache/MTReq" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/MTReq/MTReq.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/MTReq/MTReq.xsd"/>
+            <produces dir="build/generated/jaxbCache/MTReq"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/MTReq"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/GetConsumerDetailsRes"/>
+        <xjc package="com.novartis.connectors.jaxb.GetConsumerDetailsRes" destdir="build/generated/jaxbCache/GetConsumerDetailsRes" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/GetConsumerDetailsRes/GetConsumerDetailsRes.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/GetConsumerDetailsRes/GetConsumerDetailsRes.xsd"/>
+            <produces dir="build/generated/jaxbCache/GetConsumerDetailsRes"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/GetConsumerDetailsRes"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/GetPageElementsResponse"/>
+        <xjc package="com.novartis.connectors.jaxb.GetPageElementsResponse" destdir="build/generated/jaxbCache/GetPageElementsResponse" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/GetPageElementsResponse/getPageElementsRes.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/GetPageElementsResponse/getPageElementsRes.xsd"/>
+            <produces dir="build/generated/jaxbCache/GetPageElementsResponse"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/GetPageElementsResponse"/>
+        </copy>
+        <mkdir dir="build/generated/jaxbCache/GetPageElementsRequest"/>
+        <xjc package="com.novartis.connectors.jaxb.GetPageElementsRequest" destdir="build/generated/jaxbCache/GetPageElementsRequest" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema"/>
+            <schema file="src/conf/xml-resources/jaxb/GetPageElementsRequest/getPageElements.xsd"/>
+            <depends file="src/conf/xml-resources/jaxb/GetPageElementsRequest/getPageElements.xsd"/>
+            <produces dir="build/generated/jaxbCache/GetPageElementsRequest"/>
+        </xjc>
+        <copy todir="${build.generated.sources.dir}/jaxb">
+            <fileset dir="build/generated/jaxbCache/GetPageElementsRequest"/>
+        </copy>
+        <!--*** Web project javac macro does not support sourcepath attribute, so do not pass "sourcepath=${src.dir}"-->
+    </target>
+</project>

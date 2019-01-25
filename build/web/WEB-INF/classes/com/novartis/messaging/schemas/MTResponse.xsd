@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+            jxb:version="2.0">
+
+	<xsd:element name="response">
+		<xsd:complexType>
+			<xsd:sequence>
+
+				<xsd:element name="mts">
+					<xsd:complexType>
+						<xsd:sequence>
+
+							<xsd:element name="mt" maxOccurs="unbounded" minOccurs="0">
+								<xsd:complexType mixed="true">
+									<xsd:sequence>
+										<xsd:element name="mobilenumber" type="xsd:string" minOccurs="0"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="status" type="xsd:string"/>
+				<xsd:element name="statusmessage" >
+                                    <xsd:complexType mixed="true">
+                                        <xsd:sequence>
+
+                                            <xsd:element name="exceptions" minOccurs="0">
+                                                <xsd:complexType mixed = "true">
+                                                    <xsd:sequence>
+                                                        <xsd:element name="exception" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+
+					</xsd:sequence>
+                                    </xsd:complexType>
+                                 </xsd:element>
+
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+</xsd:schema>

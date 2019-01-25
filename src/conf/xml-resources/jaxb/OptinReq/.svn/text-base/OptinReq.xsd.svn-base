@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+    <xsd:element name="request">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="optins">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="consumer" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="mobilenumber" type="xsd:string"/>
+                                        <xsd:element name="consumerid" type="xsd:integer"/>
+                                        <xsd:element name="campaignid" type="xsd:integer"/>
+                                        <xsd:element name="listid" type="xsd:integer"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

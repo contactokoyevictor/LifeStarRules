@@ -1,0 +1,1124 @@
+package com.novartis.connectors.prep;
+
+import com.novartis.connectors.database.*;
+import com.novartis.connectors.jaxb.GetPageElementsRequest.Request.Page;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.math.BigInteger;
+import javax.xml.XMLConstants;
+import javax.xml.bind.*;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import com.novartis.connectors.jaxb.GetPageElementsResponse.Response;
+import com.novartis.connectors.jaxb.GetPageElementsRequest.Request;
+import com.novartis.connectors.jaxb.GetPageElementsRequest.Request.Page.Elements;
+import java.util.Calendar;
+import java.util.Date;
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.List;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
+import java.util.TimeZone;
+
+
+import java.sql.*;
+import javax.sql.DataSource;
+import javax.naming.*;
+
+public class GetPageElementsPrep {
+
+    private JAXBContext requestContext;
+    private JAXBContext responseContext;
+    private Unmarshaller unmarshaller;
+    private Marshaller marshaller;
+    private Schema schema;
+    private Response response;
+    private Request request;
+    private StringWriter responseWriter;
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+    private XMLGregorianCalendar tempDateTime() {
+        return null;
+    }
+    private String _errorOrWarningMessage = "";
+    private Connection _dbConn;
+
+    public void makeDBConnection() throws Exception {
+        if (_dbConn != null) {
+            return;
+        }
+        try {
+            Context ctx = new InitialContext();
+            DataSource ds = (DataSource) ctx.lookup("java:/jdbc/novartis");
+            _dbConn = ds.getConnection();
+        } catch (Exception e) {
+            System.out.println("SQL Exception is caught during connection creation." + e);
+            _errorOrWarningMessage = e.getMessage().toString();
+            _dbConn.close();
+            _dbConn = null;
+        }
+    }
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+    private String getElementStringValueFromList(String elementName, List elementList) {
+        for (int i = 0; i < elementList.size(); i++) {
+            JAXBElement e = (JAXBElement) elementList.get(i);
+            if (e.getName().getLocalPart().equals(elementName)) {
+                return e.getValue().toString();
+            }
+        }
+        return null;
+    }
+
+    private XMLGregorianCalendar getElementDateValueFromList(String elementName, List elementList) {
+        for (int i = 0; i < elementList.size(); i++) {
+            JAXBElement e = (JAXBElement) elementList.get(i);
+            if (e.getName().getLocalPart().equals(elementName)) {
+                return (XMLGregorianCalendar)e.getValue();
+            }
+        }
+        return null;
+    }
+
+    private XMLGregorianCalendar XMLGregorianCalendarFrom(Date dt)
+            throws javax.xml.datatype.DatatypeConfigurationException {
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(dt);
+        if (!cal.isSet(cal.HOUR)) {
+            cal.set(cal.HOUR, 0);
+            cal.set(cal.MINUTE, 0);
+            cal.set(cal.SECOND, 0);
+        }
+        cal.clear(cal.MILLISECOND);
+        XMLGregorianCalendar gc = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+        int i = Integer.parseInt(Long.toString(Math.round(Math.random() * 6) + 1));
+        switch (i) {
+            case 1:
+                gc.setTimezone(-240); //EDT
+                break;
+            case 2:
+                gc.setTimezone(-300); //CDT
+                break;
+            case 3:
+                gc.setTimezone(-360); //MDT
+                break;
+            case 4:
+                gc.setTimezone(-420); //PDT
+                break;
+            case 5:
+                gc.setTimezone(-600); //HST
+                break;
+            case 6:
+                gc.setTimezone(-540); //HDT
+                break;
+            case 7:
+                gc.setTimezone(-480); //EDT
+                break;
+        }
+        // TODO: should be based on consumerid
+        return gc;
+    }
+
+    private String getStringValue(Object o)
+    {
+        try
+        {
+            if (o != null)
+                return o.toString();
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+    private int getIntValue(Object o)
+    {
+        try{
+            return Integer.parseInt(getStringValue(o));
+        } catch (Exception e) {
+        }
+        return Integer.MIN_VALUE;
+    }
+
+    public String processXML(String xml) throws JAXBException {
+        int consumerID = 0; //consumer ID
+        int campaignID = 0; //TODO
+        PreparedStatement _sqlStatement;
+        try {
+            requestContext = JAXBContext.newInstance(com.novartis.connectors.jaxb.GetPageElementsRequest.Request.class);
+            schema = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(GetPageElementsPrep.class.getClassLoader().getResource("com/novartis/connectors/schemas/getPageElements.xsd"));
+            unmarshaller = requestContext.createUnmarshaller();
+            unmarshaller.setSchema(schema);
+            //read xml request into request object
+            request = (Request) unmarshaller.unmarshal(new StringReader(xml));
+            //create response context object
+            responseContext = JAXBContext.newInstance(com.novartis.connectors.jaxb.GetPageElementsResponse.Response.class);
+            marshaller = responseContext.createMarshaller();
+            //create response Object Factory
+            com.novartis.connectors.jaxb.GetPageElementsResponse.ObjectFactory responseOF =
+                    new com.novartis.connectors.jaxb.GetPageElementsResponse.ObjectFactory();
+            //create response <Page> Object
+            com.novartis.connectors.jaxb.GetPageElementsResponse.Response.Page responsePage = responseOF.createResponsePage();
+            //create response <elements> object
+            com.novartis.connectors.jaxb.GetPageElementsResponse.Response.Page.Elements responseElements = responseOF.createResponsePageElements();
+            //initialize response object
+            response = responseOF.createResponse();
+            //create response Elements lsit
+            List<Response.Page.Elements.Element> responseElementList = responseElements.getElement();
+            //read request element <Page> into object
+            Page requestPage = request.getPage();
+            Elements myElements = (Elements) requestPage.getElements();
+            List elementList = myElements.getElement();
+            try {
+                BigInteger consID = requestPage.getConsumerid();
+                consumerID = consID.intValue(); //throw null pointer exception.
+            } catch (Exception ex) {
+                throw new Exception("ConsumerID is NULL!" + ex.getMessage());
+            }
+
+            for (Iterator iter = elementList.iterator(); iter.hasNext();) {
+                Request.Page.Elements.Element requestElement = (Request.Page.Elements.Element) iter.next();
+                List children = requestElement.getNameOrMessageOrWeekday();
+                String s = requestElement.getId();
+                Response.Page.Elements.Element resElement = responseOF.createResponsePageElementsElement();
+                resElement.setId(s);
+                resElement.setElementstatus("OK");
+                resElement.setElementstatusmessage("");
+                try {
+                    if (s.equalsIgnoreCase("userdata")) {
+                        /*
+                         *       <element id="UserData">
+                         *        <first_name></first_name>
+                         *        <last_name></last_name>
+                         *        <dob>1985-02-24</dob>
+                         *        <gender></gender>
+                         *        <address_line1></address_line1>
+                         *        <address_line2></address_line2>
+                         *        <city></city>
+                         *        <state></state>
+                         *        <zip></zip>
+                         *        <email></email>
+                         *        <password></password>
+                         *        <phone></phone>
+                         *      </element>
+                         */
+                        String fname = getElementStringValueFromList("first_name", children);
+                        String lname = getElementStringValueFromList("last_name", children);
+                        String dob = getElementStringValueFromList("dob", children);
+                        long lDate = 0;
+                        if (dob != null) lDate = DatatypeConverter.parseDateTime(dob).getTimeInMillis();
+                        java.sql.Date dob_as_date = new java.sql.Date(lDate);
+                        String gender = getElementStringValueFromList("gender", children);
+                        if ((gender != null) && (gender.length() > 1)) gender = gender.substring(0, 1);
+                        String address_line1 = getElementStringValueFromList("address_line1", children);
+                        String address_line2 = getElementStringValueFromList("address_line2", children);
+                        String city = getElementStringValueFromList("city", children);
+                        String state = getElementStringValueFromList("state", children);
+                        String zip = getElementStringValueFromList("zip", children);
+                        String marketing = getElementStringValueFromList("marketing", children);
+                        String email = getElementStringValueFromList("email", children);
+                        String password = getElementStringValueFromList("password", children);
+                        String phone = getElementStringValueFromList("phone", children);
+                        String sms_accept = getElementStringValueFromList("sms_accept", children);
+                        UserData_dbobj user = new UserData_dbobj();
+                        if (consumerID == 0) {
+                            user.insertNewUserData(fname, lname, dob_as_date, gender, address_line1, address_line2, city, state, zip, email, password, phone, sms_accept);
+                            resElement.setConsumerid(user.getConsumer_id());
+                            resElement.setSkipTyping(user.getSkip_typing());
+                            resElement.setElementstatus(user.getElementstatus());
+                            resElement.setElementstatusmessage(user.getElementstatusmessage());
+                        } else if (consumerID > 0) {
+                            if (children.size() > 0) {
+                                user.UpdateUserData(consumerID, fname, lname, dob_as_date, gender, address_line1, address_line2, city, state, zip, email, password, phone, sms_accept);
+                                resElement.setConsumerid(user.getConsumer_id());
+                                resElement.setElementstatus(user.getElementstatus());
+                                resElement.setElementstatusmessage(user.getElementstatusmessage());
+                            } else {
+                                user.FetchUserData(consumerID);
+                                resElement.setConsumerid(user.getConsumer_id());
+                                resElement.setFirstName(user.getFirst_name());
+                                resElement.setLastName(user.getLast_name());
+                                dob_as_date = user.getDob();
+                                if (dob_as_date != null) resElement.setDob(XMLGregorianCalendarFrom(dob_as_date));
+                                resElement.setGender(user.getGender());
+                                resElement.setAddressLine1(user.getAddress1());
+                                resElement.setAddressLine2(user.getAddress2());
+                                resElement.setEmail(user.getEmail());
+                                resElement.setCity(user.getCity());
+                                resElement.setState(user.getState());
+                                resElement.setZip(user.getZip());
+                                resElement.setPassword(user.getPassword());
+                                resElement.setPhone(user.getPhone());
+                                resElement.setSmsAccept(user.getSmsAccept());
+                                resElement.setElementstatus(user.getElementstatus());
+                                resElement.setElementstatusmessage(user.getElementstatusmessage());
+                            }
+                        }
+                    } else if (s.equalsIgnoreCase("forgotpassword")) {
+                        /*
+                         *       <element id="ForogtPassword">
+                         *        <email_address></email_address>
+                         *      </element>
+                         */
+                        String email = getElementStringValueFromList("email_address", children);
+
+                        ForgotPassword_dbobj fp = new ForgotPassword_dbobj();
+                        fp.getForgotPassword(email);
+
+                        resElement.setConsumerid(fp.getConsumer_id());
+                        resElement.setElementstatus(fp.getElementstatus());
+                        resElement.setElementstatusmessage(fp.getElementstatusmessage());
+
+                    } else if (s.equalsIgnoreCase("enrollmentacceptdata")) {
+                        /*
+                         *      <element id="EnrollmentAcceptData">
+                         *      <marketing></marketing>
+                         *      <accept></accept>
+                         *      </element>
+                         *
+                         */
+                        String marketing = getElementStringValueFromList("marketing", children);
+                        String accept = getElementStringValueFromList("accept", children);
+                        int mkting = Integer.parseInt(marketing);
+                        int accpt = Integer.parseInt(accept);
+
+                        if ((mkting == 0 || mkting == 1) && (accpt == 0 || accpt == 1)) {
+                            makeDBConnection();
+                            _sqlStatement = _dbConn.prepareStatement("INSERT INTO `novartis`.`user`(accept_marketing, account_start_dt) VALUES (?, (SELECT NOW()))", Statement.RETURN_GENERATED_KEYS);
+                            _sqlStatement.setInt(1, mkting);
+                            if (_sqlStatement.executeUpdate() > 0) {
+                                ResultSet insertedKeys = _sqlStatement.getGeneratedKeys();
+                                if (insertedKeys.next())
+                                {
+                                    int k = insertedKeys.getInt(1);
+                                    resElement.setConsumerid(k);
+                                    if (accpt == 0) {
+                                        _sqlStatement = _dbConn.prepareStatement("UPDATE `novartis`.`user` SET account_start_dt = null WHERE id=?");
+                                        _sqlStatement.setInt(1, k);
+                                        int i = _sqlStatement.executeUpdate();
+                                        if (i != 1) {
+                                            throw new PrepException("Unable to update enrollemnt status");
+                                        }
+                                    }
+                                } else {
+                                    throw new PrepException("Unable to verify newly created user record.");
+                                }
+                            } else {
+                                throw new PrepException("Unable to create new user record.");
+                            }
+                        } else {
+                            throw new Exception("Invalid values for <marketing> or <accept>!");
+                        }
+                    } else if (s.equalsIgnoreCase("EnrollmentDiagnosisData")) {
+                        /*
+                         *      <element id="EnrollmentDiagnosisData">
+                         *          <high_bp>1</high_bp> 
+                         *          <medication>1</medication> 
+                         *      </element>
+                         *
+                         */
+                        String sTemp;
+                        sTemp = getElementStringValueFromList("high_bp", children);
+                        int high_bp = Integer.parseInt(sTemp);
+                        sTemp = getElementStringValueFromList("medication", children);
+                        int medication = Integer.parseInt(sTemp);
+
+                        if ((high_bp == 0 || high_bp == 1) && (medication == 0 || medication == 1)) {
+                            makeDBConnection();
+                            _sqlStatement = _dbConn.prepareStatement("UPDATE `novartis`.`user` SET high_bp = ?, medication = ? WHERE id = ?");
+                            _sqlStatement.setInt(1, high_bp);
+                            _sqlStatement.setInt(2, medication);
+                            _sqlStatement.setInt(3, consumerID);
+                            if (_sqlStatement.executeUpdate() < 1) {
+                                throw new PrepException("Unable to create new user record.");
+                            } 
+                        } else {
+                            throw new Exception("Invalid values for <medication> or <hiph_bp>!");
+                        }
+
+                    } else if (s.equalsIgnoreCase("Login")) {
+                        /*
+                         *       <element id="Login">
+                         *       <user_name></user_name>
+                         *       <password></password>
+                         *       </element>
+                         *
+                         */
+                        String username = getElementStringValueFromList("user_name", children);
+                        String password = getElementStringValueFromList("password", children);
+
+                        Login_dbobj login = new Login_dbobj();
+                        login.process(username, password);
+
+                        int id = login.getConsumer_id();
+                        String status = login.getElementstatus();
+                        String msg = login.getElementstatusmessage();
+
+                        resElement.setConsumerid(id);
+                        resElement.setCampaignid(requestPage.getCampaignid());
+                        resElement.setElementstatus(status);
+                        resElement.setElementstatusmessage(msg);
+                    } else if (s.equalsIgnoreCase("setnewpassword")) {
+                        /*
+                         *       <element id="SetNewPassword">
+                         *       <password>originalpassword</password>
+                         *       <new_password>newpassword</new_password>
+                         *       </element>
+                         *
+                         */
+                        String password = getElementStringValueFromList("password", children);
+                        String new_password = getElementStringValueFromList("new_password", children);
+
+                        SetNewPassword_dbobj passObj = new SetNewPassword_dbobj();
+
+                        passObj.setNewPassword(consumerID, password, new_password);
+                        resElement.setConsumerid(passObj.getConsumer_id());
+                        resElement.setElementstatus(resElement.getElementstatus());
+                        resElement.setElementstatusmessage(passObj.getElementstatusmessage());
+                    } else if (s.equalsIgnoreCase("DashBoardLastActivity")) {
+                        /*
+                         *     <element id="DashBoardLastActivity">
+                         *     <last_time></last_time>
+                         *     <today></today>
+                         *     <week></week>
+                         *      </element>
+                         *
+                         */
+
+                        makeDBConnection();
+                        java.sql.Date lastActivity = null;
+                        int todayCount = 0;
+                        int weekCount = 0;
+                        ResultSet rs;
+
+                        _sqlStatement = _dbConn.prepareStatement("SELECT activity_dt FROM `novartis`.`user_activities` WHERE user_id = ? " +
+                                                                    "ORDER BY activity_dt DESC limit 1");
+                        _sqlStatement.setInt(1, consumerID);
+                        rs = _sqlStatement.executeQuery();
+                        if (rs.next()) {
+                            lastActivity = rs.getDate(1);
+                            _sqlStatement = _dbConn.prepareStatement("SELECT count(1) FROM `novartis`.`user_activities` WHERE user_id = ? " +
+                                                                        " AND (WEEK(activity_dt) = WEEK(now()))");
+                            _sqlStatement.setInt(1, consumerID);
+                            rs = _sqlStatement.executeQuery();
+                            if (rs.next()) {
+                                weekCount = rs.getInt(1);
+                            }
+                            _sqlStatement = _dbConn.prepareStatement("SELECT count(1) FROM `novartis`.`user_activities` WHERE user_id = ? " +
+                                                                        " AND (DATE(activity_dt) = DATE(now()))");
+                            _sqlStatement.setInt(1, consumerID);
+                            rs = _sqlStatement.executeQuery();
+                            if (rs.next()) {
+                                weekCount = rs.getInt(1);
+                            }
+                            resElement.setLastTimeValue(XMLGregorianCalendarFrom(lastActivity));
+                            resElement.setTodayValue(todayCount);
+                            resElement.setWeekValue(weekCount);
+                        }
+                    } else if (s.equalsIgnoreCase("bpdata")) {
+                        /*
+                          <element id='BpData'>
+                            <systolic>120</systolic>
+                            <date>2011-04-01T14:21:02</date>
+                            <diastolic>130</diastolic>
+                          </element>
+                         *
+                         */
+                        try
+                        {
+                            int systolic = Integer.parseInt(getElementStringValueFromList("systolic", children));
+                            int diastolic = Integer.parseInt(getElementStringValueFromList("diastolic", children));
+                            XMLGregorianCalendar reading = getElementDateValueFromList("date", children);
+
+                            makeDBConnection();
+                            _sqlStatement = _dbConn.prepareStatement("INSERT INTO `novartis`.`blood_pressures` (user_id, systolic, diastolic, reading_dt) VALUES (?, ?, ?, ?)");
+                            _sqlStatement.setInt(1, consumerID);
+                            _sqlStatement.setInt(2, systolic);
+                            _sqlStatement.setInt(3, diastolic);
+                            java.sql.Date d = new java.sql.Date(reading.toGregorianCalendar().getTimeInMillis());
+                            _sqlStatement.setDate(4, d);
+                            _sqlStatement.execute();
+                            resElement.setElementstatus("OK");
+                            resElement.setElementstatusmessage("");
+                        } catch (Exception ex) {
+                            resElement.setElementstatus("FAIL");
+                            resElement.setElementstatusmessage(ex.getMessage());
+                        }
+                    } else if (s.equalsIgnoreCase("buddygreeting")) {
+                        /*
+                         *      <element id="BPBuddyGreeting">
+                         *      <name></name>
+                         *      <message></message>
+                         *      </element>
+                         */
+                        resElement.setBuddyName("Buddy Holiday");
+                        resElement.setBuddyGreeting("Welcome to the buddy program!");
+                    } else if (s.equalsIgnoreCase("buddydata")) {
+                        /*
+                         *          <element id="BPBuddyData">
+                         *          <first_name></first_name>
+                         *          <last_name></last_name>
+                         *          <email></email>
+                         *          <option></option>
+                         *          </element>
+                         *
+                         */
+                        String fname = getElementStringValueFromList("first_name", children);
+                        String lname = getElementStringValueFromList("last_name", children);
+                        String email = getElementStringValueFromList("email", children);
+                        String option = getElementStringValueFromList("option", children);
+
+                        BPBuddyData_dbobj buddy = new BPBuddyData_dbobj();
+                        buddy.BuddyData(consumerID, fname, lname, email, option);
+                        resElement.setConsumerid(buddy.getConsumer_id());
+                        resElement.setBuddyid(buddy.getNewKey());
+                        resElement.setElementstatus(buddy.getElementstatus());
+                        resElement.setElementstatusmessage(buddy.getElementstatusmessage());
+                        UserData_dbobj userdata = new UserData_dbobj();
+                        userdata.setConsumer_id(consumerID);
+                        userdata.UpdateNovartisIRMA(true);
+                    } else if (s.equalsIgnoreCase("contactusdata")) {
+                        /*
+                         *       <element id="ContactUsData">
+                         *       <email></email>
+                         *       <message_type></message_type>
+                         *       <other></other>
+                         *       <title></title>
+                         *       <first_name></first_name>
+                         *       <last_name></last_name>
+                         *       <address_line1></address_line1>
+                         *       <address_line2></address_line2>
+                         *       <city></city>
+                         *       <state></state>
+                         *       <zip></zip>
+                         *       <phone></phone>
+                         *       <comments></comments>
+                         *
+                         */
+
+                        resElement.setElementstatus("OK");
+                        resElement.setElementstatusmessage("");
+
+                    } else if (s.equalsIgnoreCase("enrollmentdrugchoicedata")) {
+                        //<element id="EnrollmentDrugChoiceData">
+                        //<option></option>
+                        //</element>
+                        if (children.isEmpty()) {
+                            Response.Page.Elements.Element.Drug drugs;
+                            List<Response.Page.Elements.Element.Drug> druglist = resElement.getDrug();
+
+                            makeDBConnection();
+                            _sqlStatement = _dbConn.prepareStatement("SELECT id, drug_name FROM `novartis`.`drugs`");
+                            ResultSet rs = _sqlStatement.executeQuery();
+                            while (rs.next()) {
+                                drugs = responseOF.createResponsePageElementsElementDrug();
+                                drugs.setDrugName(rs.getString("drug_name"));
+                                drugs.setDrugUniqueId(rs.getString("id"));
+                                druglist.add(drugs);
+                            }
+                        } else {
+                            String drugID = getElementStringValueFromList("drug_unique_id", children);
+                            makeDBConnection();
+                            _sqlStatement = _dbConn.prepareStatement("INSERT INTO `novartis`.`user_drugs`(user_id, drug_id) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+                            _sqlStatement.setInt(1, consumerID);
+                            _sqlStatement.setString(2, drugID);
+                            _sqlStatement.executeUpdate();
+                        }
+                    } else if (s.equalsIgnoreCase("typingquestions1to4")) {
+                        //<element id="TypingQuestion1To4">
+                        //<question1></question1>
+                        //<question2></question2>
+                        //<question3></question3>
+                        //<question4></question4>
+                        //</element>
+                        int q1, q2, q3, q4;
+                        try { //throws NumberFormatExcepion
+                            q1 = Integer.parseInt(getElementStringValueFromList("question1", children));
+                            q2 = Integer.parseInt(getElementStringValueFromList("question2", children));
+                            q3 = Integer.parseInt(getElementStringValueFromList("question3", children));
+                            q4 = Integer.parseInt(getElementStringValueFromList("question4", children));
+                        } catch (Exception ex) {
+                            throw new Exception("Questions 1 - 4 must be integers! : " + ex.getMessage());
+                        }
+
+                        TypingQuestion1To4_dbobj tq = new TypingQuestion1To4_dbobj();
+                        tq.typpinQ1to4(consumerID, q1, q2, q3, q4);
+                        resElement.setElementstatus(tq.getElementstatus());
+                        resElement.setElementstatusmessage(tq.getElementstatusmessage());
+                    } else if (s.equalsIgnoreCase("typingquestions5to7")) {
+                        // <element id="TypingQuestion5To7">
+                        //<question5></question5>
+                        //<question6></question6>
+                        //<question7></question7>
+                        //</element>
+                        int q5, q6, q7;
+
+                        try { //throws NumberFormatExcepion
+                            q5 = Integer.parseInt(getElementStringValueFromList("question5", children));
+                            q6 = Integer.parseInt(getElementStringValueFromList("question6", children));
+                            q7 = Integer.parseInt(getElementStringValueFromList("question7", children));
+                        } catch (Exception ex) {
+                            throw new Exception("Questions 5 - 7 must be integers! : " + ex.getMessage());
+                        }
+
+                        TypingQuestion5To7_dbobj tq = new TypingQuestion5To7_dbobj();
+                        tq.typpinQ5to7(consumerID, q5, q6, q7);
+                        resElement.setElementstatus(tq.getElementstatus());
+                        resElement.setElementstatusmessage(tq.getElementstatusmessage());
+                    } else if (s.equalsIgnoreCase("trackerbp")) {
+                        /*
+                        <?xml version='1.0' encoding='utf-8'?>
+                        <response>
+                          <page>
+                            <elements>
+                              <element id='TrackerBP' >
+                                <readings>
+                                  <reading>
+                                    <systolic>144</systolic>
+                                    <date>2011-04-01T14:21:02Z</date>
+                                    <diastolic>90</diastolic>
+                                    <systolic_out_of_range>1</sysstolic_out_of_range>
+                                    <diastolic_out_of_range>0</diastolic_out_of_range>
+                                  </reading>
+                                  <reading>
+                                    <systolic>141</systolic>
+                                    <date>2011-04-05T14:21:02Z</date>
+                                    <diastolic>88</diastolic>
+                                    <systolic_out_of_range>1</sysstolic_out_of_range>
+                                    <diastolic_out_of_range>0</diastolic_out_of_range>
+                                  </reading>
+                                </readings>
+                                <elementstatus>Ok</elementstatus>
+                                <elementstatusmessage></elementstatusmessage>
+                              </element>
+                            </elements>
+                                </page>
+                                <status>OK</status>
+                                <statusmessage>OK</statusmessage>
+                        </response>
+                         */
+                        XMLGregorianCalendar startDateIn = getElementDateValueFromList("start_date", children);
+                        XMLGregorianCalendar endDateIn = getElementDateValueFromList("end_date", children);
+                        java.sql.Date startDate = new java.sql.Date(startDateIn.toGregorianCalendar().getTimeInMillis());
+                        java.sql.Date endDate = new java.sql.Date(endDateIn.toGregorianCalendar().getTimeInMillis());
+                        Response.Page.Elements.Element.Readings.Reading reading;
+                        Response.Page.Elements.Element.Readings readings = new Response.Page.Elements.Element.Readings();
+                        List<Response.Page.Elements.Element.Readings.Reading> readingList = readings.getReading();
+
+                        makeDBConnection();
+                        _sqlStatement = _dbConn.prepareStatement("SELECT systolic, systolic_oor_flag, diastolic, diastolic_oor_flag, reading_dt FROM `novartis`.`blood_pressures` WHERE (user_id = ?) AND (reading_dt between ? and ?)");
+                        _sqlStatement.setInt(1, consumerID);
+                        _sqlStatement.setDate(2, startDate);
+                        _sqlStatement.setDate(3, endDate);
+                        ResultSet rs = _sqlStatement.executeQuery();
+                        while (rs.next()) {
+                            reading = responseOF.createResponsePageElementsElementReadingsReading();
+                            reading.setDate(XMLGregorianCalendarFrom(rs.getDate("reading_dt")));
+                            reading.setDiastolic(BigInteger.valueOf(rs.getInt("diastolic")));
+                            reading.setDiastolicOutOfRange(BigInteger.valueOf(rs.getInt("diastolic_oor_flag")));
+                            reading.setSystolic(BigInteger.valueOf(rs.getInt("systolic")));
+                            reading.setSystolicOutOfRange(BigInteger.valueOf(rs.getInt("systolic_oor_flag")));
+                            readingList.add(reading);
+                        } 
+                        resElement.setReadings(readings);
+                    } else if (s.equalsIgnoreCase("allremindersdelete")) {
+                        //<element id="AllRemindersDelete">
+                        //<selected></selected>
+                        //</element>
+                    } else if (s.equalsIgnoreCase("tipforbp")) {
+                        //<element id="TipForBp">
+                        //<Systolic_value></Systolic_value>
+                        //<Diastolic_value></Diastolic_value>
+                        //</element>
+                        resElement.setMessage("You can lower your BP by cutting sodium out of your diet");
+                    } else if (s.equalsIgnoreCase("dashboardlastbpreading")) {
+                        /*
+                            <element id="DashboardLastBpReading"> 
+                                <bp_message>Dash Board Last BPReading</bp_message>
+                                <date>2011-04-01T00:00:00-08:00</date>
+                                <systolic>120</systolic>
+                                <diastolic>130</diastolic>
+                                <elementstatus>OK</elementstatus>
+                                <elementstatusmessage></elementstatusmessage>
+                            </element> 
+                         */
+                        makeDBConnection();
+                        ResultSet rs;
+                        _sqlStatement = _dbConn.prepareStatement("SELECT systolic, diastolic, reading_dt FROM `novartis`.`blood_pressures` WHERE (user_id = ?) " +
+                                                                    "ORDER BY reading_dt DESC limit 1");
+                        _sqlStatement.setInt(1, consumerID);
+                        rs = _sqlStatement.executeQuery();
+                        if (rs.next()) {
+                            resElement.setDate(XMLGregorianCalendarFrom(rs.getDate("reading_dt")));
+                            resElement.setSystolic(rs.getInt("systolic"));
+                            resElement.setDiastolic(rs.getInt("diastolic"));
+                        }
+                        resElement.setBpMessage("Dash Board Last BPReading");
+                    } else if (s.equalsIgnoreCase("dashboardhealthreminder")) {
+                        //<element id="DashBoardHealthReminder">
+                        //<Next_Remind_Time></Next_Remind_Time>
+                        //<Next_Remind_Message></Next_Remind_Message>
+                        //</element>
+
+                        /*
+                        GregorianCalendar now = new GregorianCalendar();
+
+                        DatatypeFactory df = DatatypeFactory.newInstance();
+                        XMLGregorianCalendar gcTime =
+                        df.newXMLGregorianCalendarTime(
+                        now.get( Calendar.HOUR_OF_DAY ),
+                        now.get( Calendar.MINUTE ),
+                        now.get( Calendar.SECOND ),
+                        null,
+                        DatatypeConstants.FIELD_UNDEFINED );
+                         */
+                        Date now = new Date();
+                        XMLGregorianCalendar gcTime = XMLGregorianCalendarFrom(now);
+
+                        resElement.setNextRemindTime(gcTime);
+                        resElement.setNextRemindMessage("Refill prescription");
+                    } else if (s.equalsIgnoreCase("DashBoardBuddyMessage")) {
+                        // <element id="DashBoardBuddyMessage">
+                        // </element>
+                        resElement.setMessage("DashBoard Buddy Message test!");
+                        resElement.setMessageTitle("Title Test");
+                    } else if (s.equalsIgnoreCase("TipForActivity")) {
+                        // no elements defined
+                        resElement.setMessage("Try getting outside for a walk, it\'s great excersize.");
+                    } else if (s.equalsIgnoreCase("ActivityGoal")) {
+                        if (children.isEmpty()) {
+
+                            resElement.setGoal("3");
+                        } else { // non-empty child, save the new activity goal
+                        }
+                    } else if (s.equalsIgnoreCase("AgreeToTermsAndConditions")) {
+                    } else if (s.equalsIgnoreCase("GetActivityHistory")) {
+                        XMLGregorianCalendar startDateIn = getElementDateValueFromList("start_date", children);
+                        XMLGregorianCalendar endDateIn = getElementDateValueFromList("end_date", children);
+                        java.sql.Date startDate = new java.sql.Date(startDateIn.toGregorianCalendar().getTimeInMillis());
+                        java.sql.Date endDate = new java.sql.Date(endDateIn.toGregorianCalendar().getTimeInMillis());
+                        Response.Page.Elements.Element.Activity activity;
+                        List<Response.Page.Elements.Element.Activity> activityList = resElement.getActivity();
+
+                        makeDBConnection();
+                        _sqlStatement = _dbConn.prepareStatement("SELECT `novartis`.`user_activities`.id AS id, activity_id, activity_resource_id, activity_dt FROM `novartis`.`user_activities` LEFT JOIN `novartis`.`activities` ON (`novartis`.`user_activities`.activity_id = `novartis`.`activities`.id) WHERE (user_id = ?) AND (activity_dt between ? and ?)");
+                        _sqlStatement.setInt(1, consumerID);
+                        _sqlStatement.setDate(2, startDate);
+                        _sqlStatement.setDate(3, endDate);
+                        ResultSet rs = _sqlStatement.executeQuery();
+                        while (rs.next()) {
+                            activity = responseOF.createResponsePageElementsElementActivity();
+                            activity.setUserActivityId(rs.getInt("id"));
+                            activity.setActivityid(rs.getInt("activity_id"));
+                            activity.setDate(XMLGregorianCalendarFrom(rs.getDate("activity_dt")));
+                            activity.setResourceid(rs.getString("activity_resource_id"));
+                            activityList.add(activity);
+                        }
+                    } else if (s.equalsIgnoreCase("GetActivityList")) {
+                        Response.Page.Elements.Element.Activity activity;
+                        List<Response.Page.Elements.Element.Activity> activityList = resElement.getActivity();
+
+                        makeDBConnection();
+                        _sqlStatement = _dbConn.prepareStatement("SELECT id, activity_name, activity_desc, activity_label, activity_resource_id, activity_group_id, activity_group_order FROM `novartis`.`activities`");
+                        ResultSet rs = _sqlStatement.executeQuery();
+                        while (rs.next()) {
+                            activity = responseOF.createResponsePageElementsElementActivity();
+                            activity.setActivityid(rs.getInt("id"));
+                            activity.setDescription(rs.getString("activity_desc"));
+                            activity.setLabel(rs.getString("activity_label"));
+                            activity.setResourceid(rs.getString("activity_resource_id"));
+                            activity.setActivitygroupid(rs.getString("activity_group_id"));
+                            activity.setActivitygrouporder(rs.getString("activity_group_order"));
+                            activityList.add(activity);
+                        }
+                    } else if (s.equalsIgnoreCase("UpdateActivityStatus")) {
+                        /*
+                        When  <user_activity_id > is empty, a new user activity record is created.
+
+                        When a  <user_activity_id > supplied,  an existing user activity will be updated .
+
+                        For each user activity, the value will be captured with it. For the GOT system, it is
+                        assumed that any activity will have a value of 1, but in future programs, the activity
+                        could have a scalar value and a unit (X minutes of exercise, N miles jogged).
+
+                        To remove an activity, use DeleteActivity.
+
+                        2.29.1	Request XML Node Descriptions
+                        All Nodes are required except where otherwise noted. Only one of each element is allowed (unless noted below).
+                        1)	element "id" attribute – Contains the id of the page element to retrieve.
+                        2)	activity - Contains elements related to the activity. This request can contain multiple activity elements.
+                        3)	user_activity_id - Integer.
+                        4)	value - Integer. A value describing how much of the activity was accomplished. Must be 1 or greater.
+                        5)	date - DateTime of the activity. Timezone must be omitted for GOT v1, the time will be assumed to be user's local time.
+
+                        2.29.2	XML Example: Create Activities
+                        Since the user_activity_id is empty, these are new activities.
+                        Request:
+                        <?xml version='1.0' encoding='utf-8'?>
+                        <request>
+                          <page>
+                            <campaignid>2</campaignid>
+                            <consumerid>1234</consumerid>
+                            <elements>
+                              <element id='UpdateActivityStatus'>
+                                <activity>
+                                                <activityid>101</activityid>
+                                                <value>1</value>
+                                                <date>2011-12-31T10:30:00</date>
+                                </activity>
+                                <activity>
+                                                <activityid>102</activityid>
+                                                <value>1</value>
+                                                <date>2011-12-31T10:30:00</date>
+                                </activity>
+                              </element>
+                            </elements>
+                          </page>
+                        </request>
+
+                        Response:
+                        <?xml version='1.0' encoding='utf-8'?>
+                        <response>
+                          <page>
+                            <elements>
+                              <element id='UpdateActivityStatus'>
+                                <activity>
+                                                <user_activity_id>2345678</user_activity_id>
+                                </activity>
+                                <activity>
+                                                <user_activity_id>2345679</user_activity_id>
+                                </activity>
+                                        <elementstatus>Ok</elementstatus>
+                                        <elementstatusmessage></elementstatusmessage>
+                             </element>
+                            </elements>
+                          </page>
+                          <status>OK</status>
+                                 <statusmessage>OK</statusmessage>
+                        </response>
+
+                        2.29.3	XML Example: Update Activities
+                        This example displays a request.
+
+                        Request:
+                        <?xml version='1.0' encoding='utf-8'?>
+                        <request>
+                          <page>
+                            <campaignid>2</campaignid>
+                            <consumerid>1234</consumerid>
+                            <elements>
+                              <element id='UpdateActivityStatus'>
+                                <activity>
+                                                <user_activity_id>2345678</user_activity_id>
+                                                <value>1</value>
+                                                <date>2011-12-31T10:30:00</date>
+                                </activity>
+                                <activity>
+                                                <user_activity_id>2345679</user_activity_id>
+                                                <value>1</value>
+                                                <date>2011-12-31T10:30:00</date>
+                                </activity>
+                              </element>
+                            </elements>
+                          </page>
+                        </request>
+
+                        Response:
+                        <?xml version='1.0' encoding='utf-8'?>
+                        <response>
+                          <page>
+                            <elements>
+                              <element id='UpdateActivityStatus'>
+                                <activity>
+                                                <user_activity_id>2345678</user_activity_id>
+                                </activity>
+                                <activity>
+                                                <user_activity_id>2345999</user_activity_id>
+                                </activity>
+                                                <elementstatus>Ok</elementstatus>
+                                                <elementstatusmessage></elementstatusmessage>
+
+                             </element>
+                            </elements>
+                          </page>
+                          <status>OK</status>
+                                 <statusmessage>OK</statusmessage>
+                        </response>
+                        */
+
+                        Response.Page.Elements.Element.Activity activity;
+                        Request.Page.Elements.Element.Activity activityInput;
+                        List<Response.Page.Elements.Element.Activity> activityList = resElement.getActivity();
+
+                        makeDBConnection();
+                        for (int i = 0; i < children.size(); i++) {
+                            JAXBElement e = (JAXBElement) children.get(i);
+                            if (e.getName().getLocalPart().equals("activity")) {
+                                try {
+                                    activityInput = (Request.Page.Elements.Element.Activity)e.getValue();
+//TODO                                    int value = Integer.parseInt(getStringValue(activityInput.getValue()));
+                                    int userActivityID = 0;
+                                    java.sql.Date d = new java.sql.Date(activityInput.getDate().toGregorianCalendar().getTimeInMillis());
+                                    int activityID = activityInput.getActivityid().intValue();
+
+                                    if (activityInput.getUserActivityId() != null) {
+                                        userActivityID = activityInput.getUserActivityId().intValue();
+                                        _sqlStatement = _dbConn.prepareStatement("UPDATE `novartis`.`user_activities` SET activity_id = ?, activity_dt = ?, value = ? WHERE id = ? AND user_id = ?");
+                                        _sqlStatement.setInt(1, activityID);
+                                        _sqlStatement.setDate(2, d);
+//TODO                                        _sqlStatement.setInt(3, value);
+                                        _sqlStatement.setInt(3, 1);
+                                        _sqlStatement.setInt(4, userActivityID);
+                                        _sqlStatement.setInt(5, consumerID);
+                                        _sqlStatement.executeUpdate();
+                                    } else { // insert new activity record
+                                        _sqlStatement = _dbConn.prepareStatement("INSERT INTO `novartis`.`user_activities`(activity_id, activity_dt, value, user_id) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                                        _sqlStatement.setInt(1, activityID);
+                                        _sqlStatement.setDate(2, d);
+//                                        _sqlStatement.setInt(3, value);
+                                        _sqlStatement.setInt(3, 1);
+                                        _sqlStatement.setInt(4, consumerID);
+                                        if (_sqlStatement.executeUpdate() > 0) {
+                                            ResultSet insertedKeys = _sqlStatement.getGeneratedKeys();
+                                            if (insertedKeys.next())
+                                            {
+                                                userActivityID = insertedKeys.getInt(1);
+                                            }
+                                        }
+                                    }
+                                    activity = responseOF.createResponsePageElementsElementActivity();
+                                    activity.setUserActivityId(userActivityID);
+                                    activityList.add(activity);
+                                } catch (Exception ex) {
+                                    resElement.setElementstatus("ERROR");
+                                    resElement.setElementstatusmessage(ex.getMessage());
+                                }
+                            }
+                        }
+                    } else if (s.equalsIgnoreCase("Logout")) {
+                    } else if (s.equalsIgnoreCase("TipsForActivities")) {
+                        Response.Page.Elements.Element.Tips tips = new Response.Page.Elements.Element.Tips();
+                        List<Response.Page.Elements.Element.Tips.Tip> tipList = tips.getTip();
+                        Response.Page.Elements.Element.Tips.Tip tip;
+/*                        makeDBConnection();
+                        _sqlStatement = _dbConn.prepareStatement("SELECT id, activity_name, activity_desc, activity_label, activity_resource_id FROM `novartis`.`activities`");
+                        ResultSet rs = _sqlStatement.executeQuery();
+                        while (rs.next()) {
+                            activity = responseOF.createResponsePageElementsElementActivity();
+                            activity.setActivityid(rs.getInt("id"));
+                            activity.setDescription(rs.getString("activity_desc"));
+                            activity.setLabel(rs.getString("activity_label"));
+                            activity.setResourceid(rs.getString("activity_resource_id"));
+                            activityList.add(activity);
+                        }
+
+                        _dbConn.close();
+*/
+                        tip = new Response.Page.Elements.Element.Tips.Tip();
+                        tip.setTipName("Healthy Eating");
+                        tip.setTipContent("Here is copy for this tip & a smile.");
+                        tip.setTipId(1234);
+                        tipList.add(tip);
+
+                        resElement.setTips(tips);
+
+                    } else if (s.equalsIgnoreCase("TipsForBP")) {
+
+                        Response.Page.Elements.Element.Tips tips = new Response.Page.Elements.Element.Tips();
+                        List<Response.Page.Elements.Element.Tips.Tip> tipList = tips.getTip();
+                        Response.Page.Elements.Element.Tips.Tip tip;
+
+/*                        makeDBConnection();
+                        _sqlStatement = _dbConn.prepareStatement("SELECT id, activity_name, activity_desc, activity_label, activity_resource_id FROM `novartis`.`activities`");
+                        ResultSet rs = _sqlStatement.executeQuery();
+                        while (rs.next()) {
+                            activity = responseOF.createResponsePageElementsElementActivity();
+                            activity.setActivityid(rs.getInt("id"));
+                            activity.setDescription(rs.getString("activity_desc"));
+                            activity.setLabel(rs.getString("activity_label"));
+                            activity.setResourceid(rs.getString("activity_resource_id"));
+                            activityList.add(activity);
+                        }
+
+                        _dbConn.close();
+*/
+                        tip = new Response.Page.Elements.Element.Tips.Tip();
+                        tip.setTipName("Healthy Eating");
+                        tip.setTipContent("Here is copy for this tip & a smile.");
+                        tip.setTipId(1234);
+                        tipList.add(tip);
+
+                        resElement.setTips(tips);
+                    } else if (s.equalsIgnoreCase("UnsubscribeReminders")) {
+                    } else if (s.equalsIgnoreCase("DeleteActivity")) {
+                    } else if (s.equalsIgnoreCase("DeleteReminders")) {
+                        if (children.isEmpty()) {
+                            resElement.setElementstatusmessage("Please specify reminders to delete");
+                            resElement.setElementstatus("FAIL");
+                        }
+                    } else if (s.equalsIgnoreCase("Reminders")) {
+                        if (children.isEmpty()) {
+                            // return a list of the reminders for this user
+/*                            makeDBConnection();
+                            _sqlStatement = _dbConn.prepareStatement("SELECT id, activity_name, activity_desc, activity_label, activity_resource_id FROM `novartis`.`activities`");
+                            ResultSet rs = _sqlStatement.executeQuery();
+                            while (rs.next()) {
+                                activity = responseOF.createResponsePageElementsElementActivity();
+                                activity.setActivityid(rs.getInt("id"));
+                                activity.setDescription(rs.getString("activity_desc"));
+                                activity.setLabel(rs.getString("activity_label"));
+                                activity.setResourceid(rs.getString("activity_resource_id"));
+                                activityList.add(activity);
+                            _dbConn.close();
+*/
+                            
+                            /*
+        <reminder>
+          <reminder_id>22222</reminder_id>
+          <reminder_type>MED</reminder_type> 
+          <weekdays> 
+            <weekday>Monday</weekday> 
+            <weekday>Thursday</weekday> 
+          </weekdays> 
+          <start_date>2011-12-31T00:00:00-5:00</start_date> 
+          <times> 
+            <time>13:00</time> 
+            <time>15:00</time> 
+          </times> 
+          <frequency>Weekly</frequency>
+          <email>1</email>
+          <sms>1</sms>
+        </reminder>
+        <reminder>
+          <reminder_id>33333</reminder_id>
+          <reminder_type>RX</reminder_type> 
+          <weekdays> 
+            <weekday>Monday</weekday> 
+            <weekday>Thursday</weekday> 
+          </weekdays> 
+          <start_date>2011-12-31T00:00:00-5:00</start_date> 
+          <times> 
+            <time>13:00</time> 
+            <time>15:00</time> 
+          </times> 
+          <frequency>Weekly</frequency>
+          <email>1</email>
+          <sms>1</sms>
+        </reminder>
+                             */
+                            List<Response.Page.Elements.Element.Reminder> reminders = resElement.getReminder();
+                            Response.Page.Elements.Element.Reminder reminder;
+                            Response.Page.Elements.Element.Reminder.Times times;
+                            List<XMLGregorianCalendar> timesList;
+                            Response.Page.Elements.Element.Reminder.Weekdays weekdays;
+                            List<String> weekdayList;
+
+                            reminder = new Response.Page.Elements.Element.Reminder();
+                            times = new Response.Page.Elements.Element.Reminder.Times();
+                                timesList = times.getTime();
+
+                            XMLGregorianCalendarFrom(new Date());
+                            timesList.add(XMLGregorianCalendarFrom(new Date(00,00,00,03,30)));
+
+                            reminder.setTimes(times);
+
+                            weekdays = new Response.Page.Elements.Element.Reminder.Weekdays();
+                            weekdayList = weekdays.getWeekday();
+                            weekdayList.add("Monday");
+                            weekdayList.add("Tuesday");
+
+                            reminder.setWeekdays(weekdays);
+
+                            reminder.setEmail(BigInteger.ONE);
+                            reminder.setReminderId(BigInteger.valueOf(Math.round(Math.random() * 62000) + 1));
+                            reminder.setReminderType("MED");
+                            reminder.setSms(BigInteger.ZERO);
+//                            reminder.setStartTime(XMLGregorianCalendarFrom(new Date()));
+                            reminders.add(reminder);
+                        } else {
+                            List<Response.Page.Elements.Element.Reminder> reminders = resElement.getReminder();
+                            for (int i = 0; i < children.size(); i++) {
+                                Response.Page.Elements.Element.Reminder reminder;
+                                reminder = new Response.Page.Elements.Element.Reminder();
+                                reminder.setReminderId(BigInteger.valueOf(Math.round(Math.random() * 62000) + 1));
+                                reminders.add(reminder);
+                            }
+                        }
+                    } else {
+                        throw new Exception("Unknown element type in request.");
+                    }
+                } catch (PrepException pe) {
+                    resElement.setElementstatus("FAIL");
+                    resElement.setElementstatusmessage(pe.getMessage());
+                } catch (Exception e) {
+                    resElement.setElementstatus("ERROR");
+                    String errorMessage = e.getMessage();
+                    if (errorMessage == null) errorMessage = "Unknown exception thrown while processing element.";
+                    resElement.setElementstatusmessage(errorMessage);
+                    e.printStackTrace();
+                } finally {
+                    responseElementList.add(resElement);
+                }
+            } // for <element>
+
+            responsePage.setElements(responseElements);
+            response.setPage(responsePage);
+            response.setStatus("ok");
+            response.setStatusmessage("OK");
+
+
+            responseWriter = new StringWriter();
+            marshaller.setProperty(marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(response, responseWriter);
+
+
+
+        } catch (JAXBException e) { // Why is this here? I think we should look at what a FAIL response indicates
+            responseWriter = new StringWriter();
+            responseWriter.write(generateErrorResponse("FAIL", e));
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseWriter = new StringWriter();
+            responseWriter.write(generateErrorResponse("ERROR: ", e));
+        } finally {
+            try {
+                if (_dbConn != null && !_dbConn.isClosed()) _dbConn.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return responseWriter.toString();
+    }
+
+    private String generateErrorResponse(String errtype, Exception e) throws PropertyException, JAXBException {
+
+        com.novartis.connectors.jaxb.GetPageElementsResponse.ObjectFactory responseOF =
+                new com.novartis.connectors.jaxb.GetPageElementsResponse.ObjectFactory();
+        com.novartis.connectors.jaxb.GetPageElementsResponse.Response errResponse =
+                new com.novartis.connectors.jaxb.GetPageElementsResponse.Response();
+
+        com.novartis.connectors.jaxb.GetPageElementsResponse.Response.Page.Elements responseElements = responseOF.createResponsePageElements();
+
+        Response.Page resPage = responseOF.createResponsePage();
+        responseContext = JAXBContext.newInstance(
+                com.novartis.connectors.jaxb.GetPageElementsResponse.Response.class);
+        marshaller = responseContext.createMarshaller();
+
+        resPage.setElements(responseElements);
+        errResponse.setPage(resPage);
+        errResponse.setStatus(errtype);
+        errResponse.setStatusmessage(e.toString());
+        responseWriter = new StringWriter();
+
+        marshaller.setProperty(marshaller.JAXB_FORMATTED_OUTPUT,
+                true);
+        marshaller.marshal(errResponse, responseWriter);
+
+        return responseWriter.toString();
+
+    }
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+    <xsd:element name="request">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="consumer">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="campaignid" type="xsd:integer"/>
+                            <xsd:element name="consumerid" type="xsd:integer"/>
+                            <xsd:element name="lat"/>
+                            <xsd:element name="lon"/>
+                            <xsd:element name="geofences">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="geofence">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="geofenceid" type="xsd:integer"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
