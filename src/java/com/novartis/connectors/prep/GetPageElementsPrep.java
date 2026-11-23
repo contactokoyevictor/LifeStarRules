@@ -553,7 +553,7 @@ System.out.println("********************");
                 conn = (HttpURLConnection) new java.net.URL("http://appstaging.ipsh.net:18855/reportedEvents/services/ReportManager/").openConnection();
 
 //                BASE64Encoder enc = new sun.misc.BASE64Encoder();
-//                String userpassword = "pae-getontrack:pa3-g3t0ntrack";
+//                String userpassword = "REDACTED";
 //                String encodedAuthorization = enc.encode( userpassword.getBytes() );
                 conn.setRequestProperty("Authorization", "Basic " + "cGFlLWdldG9udHJhY2s6cGEzLWczdDBudHJhY2s=");
 
@@ -802,7 +802,7 @@ System.out.println("AE Reporting response:" + strResponseXml);
                 conn = (HttpURLConnection) new java.net.URL("http://appstaging.ipsh.net:7979/contactus/services/ContactUs").openConnection();
 
 //                BASE64Encoder enc = new sun.misc.BASE64Encoder();
-//                String userpassword = "partner1:partner1";
+//                String userpassword = "REDACTED";
 //                String encodedAuthorization = enc.encode( userpassword.getBytes() );
                 conn.setRequestProperty("Authorization", "Basic " + "cGFydG5lcjE6cGFydG5lcjE=");
                 conn.setRequestProperty("SOAPAction", "");
